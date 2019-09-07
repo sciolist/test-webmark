@@ -8,12 +8,10 @@ services:
     ports:
       - 3000:3000
   db:
-    image: postgres:11.5
+    build: "${WEBMARK_DOCKER_ROOT}/database"
     environment:
       POSTGRES_USER: "app"
       POSTGRES_PASSWORD: "app"
-    volumes:
-      - "${WEBMARK_DOCKER_ROOT}/database.sql:/docker-entrypoint-initdb.d/database.sql"
   adminer:
     image: adminer
     restart: always

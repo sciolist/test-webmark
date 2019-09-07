@@ -37,7 +37,7 @@ module.exports = async function run(CONFIGURATION) {
     const testFiles = glob.sync('./tests/*');
 
     async function getStats() {
-        const url = `unix:/var/run/docker.sock:/containers/${containerId}/stats?stream=false`;
+        const url = `${process.env.DOCKER_API}/containers/${containerId}/stats?stream=false`;
         const res = await got(url);
         return JSON.parse(res.body);
     }
@@ -47,6 +47,7 @@ module.exports = async function run(CONFIGURATION) {
     });
     let results = {};
     for (const t of testFiles) {
+        console.log(`starting test: ${t}`);
         const name = path.basename(t, '.sh');
         let running = true;
         let output = [];
@@ -65,6 +66,7 @@ module.exports = async function run(CONFIGURATION) {
                 mem_usage
             };
         }
+        console.log(`ending test: ${t}`);
     }
     fs.writeFileSync(`./out/${CONFIGURATION}.json`, JSON.stringify(results, null, 4));
 }

@@ -4,7 +4,13 @@ const glob = require('glob');
 const path = require('path');
 
 if (!process.env.WEBMARK_DOCKER_ROOT) {
-    process.env.WEBMARK_DOCKER_ROOT = '.';
+    process.env.WEBMARK_DOCKER_ROOT = __dirname;
+}
+if (!process.env.URL) {
+    process.env.URL = "http://localhost:3000";
+}
+if (!process.env.DOCKER_API) {
+    process.env.DOCKER_API = "unix:/var/run/docker.sock:";
 }
 
 if (!fs.existsSync('./out')) {
