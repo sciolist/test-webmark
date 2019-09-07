@@ -5,7 +5,6 @@ import (
 	"strings"
 	"flag"
 	"log"
-	"net"
 	"runtime"
 	"encoding/json"
 
@@ -140,10 +139,4 @@ func allFortunesHandler(ctx *fasthttp.RequestCtx) {
 	}
 	ctx.SetContentType("application/json")
 	ctx.Write(wb)
-}
-
-func GetListener(listenAddr string) net.Listener {
-	ln, err := 	net.Listen("tcp4", listenAddr)
-	if err != nil { log.Fatal(err) }
-	return ln
 }

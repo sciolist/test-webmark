@@ -6,9 +6,9 @@ import autocannon from 'autocannon';
 import { tests, connections, threads, duration } from './tests';
 
 const sleep = ms => new Promise(s => setTimeout(s, ms));
-async function waitForExit(proc) {
+async function waitForExit(proc, cfg) {
     return new Promise((res, rej) => proc.once('exit', (code, c) => {
-        code ? rej(new Error(`process failed with code ${code}`)) : res()
+        code ? rej(new Error(`${cfg} process failed with code ${code}`)) : res()
     }));
 }
 
@@ -28,7 +28,7 @@ async function runTestIteration(host: IDockerhost, containerId: string, testName
     let samples = [];
     const instance = autocannon({
         url: `${host.URL}/${testName}`,
-        timeout: duration,
+        timeout: duration * 3,
         connections: connections,
         threads: threads,
         duration: duration
@@ -64,7 +64,7 @@ async function startContainers(host: IDockerhost, configurationName: string) {
         }
     });
     proc.stdout.pipe(process.stdout);
-    await waitForExit(proc);
+    await waitForExit(proc, configurationName);
     return containerId;
 }
 
