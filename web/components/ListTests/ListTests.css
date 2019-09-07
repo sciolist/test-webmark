@@ -1,0 +1,15 @@
+
+.results {
+    border: 4px solid skyblue;
+    padding: 4px;
+}
+
+.test {
+    padding: 8px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.test.active {
+    background: skyblue;
+}

@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "commonjs",
+        "jsx": "preserve",
+        "jsxFactory": "h",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true
+    }
+}

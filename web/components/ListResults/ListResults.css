@@ -1,0 +1,53 @@
+.bar {
+    padding: 1px;
+    width: 250px;
+    flex-grow: 1;
+    height: 8px;
+    margin-right: 8px;
+}
+
+.bar > div {
+    background: black;
+    height: 8px;
+}
+
+.requests_pct {
+    text-align: right;
+    width: 3em;
+    opacity: 0.35;
+}
+
+.box {
+    background: #ccc;
+}
+
+.requests {
+    align-items: center;
+    display: flex;
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table > tbody > tr:nth-child(2n) {
+    background: #f9f9f9;
+}
+
+.table > * > tr > th {
+    text-align: left;
+}
+
+.table > tbody > tr {
+    background: #f0f0f0;
+}
+
+.table > * > tr > * {
+    vertical-align: middle;
+    padding: 8px 16px;
+}
+
+.error {
+    background: rgb(232, 166, 166) !important;
+}

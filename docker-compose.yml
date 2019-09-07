@@ -1,0 +1,21 @@
+version: "3"
+services:
+  api:
+    depends_on: [db]
+    build: "${WEBMARK_DOCKER_ROOT}/configurations/${CONFIGURATION}"
+    environment:
+      RUST_BACKTRACE: 1
+    ports:
+      - 3000:3000
+  db:
+    image: postgres:11.5
+    environment:
+      POSTGRES_USER: "app"
+      POSTGRES_PASSWORD: "app"
+    volumes:
+      - "${WEBMARK_DOCKER_ROOT}/database.sql:/docker-entrypoint-initdb.d/database.sql"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080

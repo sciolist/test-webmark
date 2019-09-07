@@ -1,0 +1,46 @@
+{
+  "name": "webmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "execute.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-web": "webpack-dev-server --config web/webpack.config.js",
+    "build-web": "NODE_ENV=production webpack --config web/webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autocannon": "^4.1.0",
+    "glob": "^7.1.4",
+    "got": "^9.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "@babel/plugin-transform-react-jsx": "^7.3.0",
+    "@babel/plugin-transform-runtime": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@babel/runtime": "^7.5.5",
+    "@types/dockerode": "^2.5.20",
+    "@types/got": "^9.6.7",
+    "@types/node-fetch": "^2.5.0",
+    "babel-loader": "^8.0.6",
+    "babel-preset-preact": "^2.0.0",
+    "css-loader": "^3.2.0",
+    "html-webpack-plugin": "^3.2.0",
+    "iaktta.preact": "^0.1.1",
+    "preact": "^8.5.2",
+    "style-loader": "^1.0.0",
+    "typescript": "^3.6.2",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.8",
+    "webpack-dev-server": "^3.8.0"
+  }
+}
