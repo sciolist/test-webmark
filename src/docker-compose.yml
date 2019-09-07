@@ -2,13 +2,13 @@ version: "3"
 services:
   api:
     depends_on: [db]
-    build: "${WEBMARK_DOCKER_ROOT}/configurations/${CONFIGURATION}"
+    build: "${ROOT}/configurations/${CONFIGURATION}"
     environment:
       RUST_BACKTRACE: 1
     ports:
       - 3000:3000
   db:
-    build: "${WEBMARK_DOCKER_ROOT}/database"
+    build: "${ROOT}/database"
     environment:
       POSTGRES_USER: "app"
       POSTGRES_PASSWORD: "app"

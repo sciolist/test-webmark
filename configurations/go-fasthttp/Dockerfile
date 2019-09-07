@@ -10,4 +10,4 @@ RUN go get -d -u github.com/valyala/fasthttp/...
 
 COPY . .
 RUN go build -gcflags='-l=4' main
-CMD ./main
+CMD bash start.sh

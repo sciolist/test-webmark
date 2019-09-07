@@ -26,7 +26,7 @@ export class ListResults extends Component {
             const np = row.name.split('-');
             const mb = (row.test.mem_usage / 1024768) | 0;
             const pct = (row.pct * 100) | 0;
-            const hasError = row.test.non2xx > 0;
+            const hasError = row.test.non2xx > 0 || row.test.errors > 0;
             rows.push(
                 <tr key={row.name} className={hasError ? css.error : ''}>
                     <td>{np[0]}</td>
@@ -39,7 +39,7 @@ export class ListResults extends Component {
                             {pct}%
                         </div>
                     </td>
-                    <td style={{ textAlign: 'right' }}>{Math.floor(row.test["2xx"] / row.test.duration)}</td>
+                    <td style={{ textAlign: 'right' }}>{Math.floor(row.test.requests.mean)}</td>
                     <td style={{ textAlign: 'right' }}>{mb} MB</td>
                 </tr>
             )
