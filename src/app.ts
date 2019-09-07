@@ -7,8 +7,6 @@ import { setupDatabase } from './database';
 const dockercfg = require(`../docker/${config.docker.type}`);
 const DIR = process.env.DIRECTORY = path.resolve(__dirname, '..', config.outputPath || 'out');
 
-Object.assign(process.env, config.environment);
-
 if (!fs.existsSync(DIR)) {
   fs.mkdirSync(DIR);
 }
@@ -31,11 +29,11 @@ if (process.argv.length > 2) {
 
 console.log("running configurations: ", configurations.join(", "));
 async function main() {
-    await setupDatabase();
-    const pool = await dockercfg.startup(config.docker);
-    try {
-        await Promise.all(configurations.map(async cfg => {
+  const pool = await dockercfg.startup(config.docker);
+  try {
+    await Promise.all(configurations.map(async cfg => {
             const host = await pool.acquire();
+            await setupDatabase(host);
             try {
                 const data = await run(cfg, host);
                 fs.writeFileSync(`${config.outputPath}/${cfg}.json`, JSON.stringify(data, null, 4));

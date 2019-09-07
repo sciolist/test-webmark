@@ -1,6 +1,5 @@
 import { IDockerhost } from '../docker/pool';
 import cp from 'child_process';
-import fs from 'fs';
 import got from 'got';
 import autocannon from 'autocannon';
 import { tests, connections, threads, duration } from './tests';
@@ -50,7 +49,12 @@ async function runTestIteration(host: IDockerhost, containerId: string, testName
 }
 
 async function startContainers(host: IDockerhost, configurationName: string) {
-    const env = { ...process.env, ...host, CONFIGURATION: configurationName };
+    const env = {
+        ...process.env,
+        ...host,
+        ...(host.database || {}),
+        CONFIGURATION: configurationName
+    };
     let containerId = "-1";
     const proc = cp.execFile('sh', [__dirname + '/start-configuration.sh'], {
         cwd: __dirname,

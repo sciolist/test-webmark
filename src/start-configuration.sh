@@ -5,11 +5,11 @@ COMPOSEFILE="docker-compose.nodb.yml"
 
 if [ -z "${PGHOST:-}" ]
 then
-    PGUSER="app"
-    PGPASSWORD="app"
-    PGDATABASE="app"
-    PGHOST="db"
-    PGPORT="5432"
+    export PGUSER="app"
+    export PGPASSWORD="app"
+    export PGDATABASE="app"
+    export PGHOST="db"
+    export PGPORT="5432"
     COMPOSEFILE="docker-compose.yml"
 fi
 
