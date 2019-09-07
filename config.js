@@ -1,7 +1,8 @@
 module.exports = {
-    docker: {
-        type: "hostlist",
-        hosts: [
+    "outputPath": "./out",
+    "docker": {
+        "type": "hostlist",
+        "hosts": [
             {
                 "URL": `http://localhost:3000`
             }

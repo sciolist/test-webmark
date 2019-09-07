@@ -68,23 +68,18 @@ async function startContainers(host: IDockerhost, configurationName: string) {
     return containerId;
 }
 
-export async function run(configurationName, hostpool) {
-    const host = await hostpool.acquire();
-    try {
-        console.log(`${configurationName} starting on ${host.URL}`);
-        const containerId = await startContainers(host, configurationName);
-        let results = {};
-        for (const [testName, testConfig] of Object.entries(tests)) {
-            console.log(`${configurationName}: test ${testName} is starting`);
-            for (let i=0; i<2; ++i) {
-                const result = await runTestIteration(host, containerId, testName, testConfig);
-                results[testName] = result;
-            }
-            console.log(`${configurationName}: test ${testName} is ending`);
+export async function run(configurationName, host: IDockerhost) {
+    console.log(`${configurationName} starting on ${host.URL}`);
+    const containerId = await startContainers(host, configurationName);
+    let results = {};
+    for (const [testName, testConfig] of Object.entries(tests)) {
+        console.log(`${configurationName}: test ${testName} is starting`);
+        for (let i=0; i<2; ++i) {
+            const result = await runTestIteration(host, containerId, testName, testConfig);
+            results[testName] = result;
         }
-        console.log(`${configurationName} ending`);
-        fs.writeFileSync(`./out/${configurationName}.json`, JSON.stringify(results, null, 4));
-    } finally {
-        await hostpool.release(host);
+        console.log(`${configurationName}: test ${testName} is ending`);
     }
+    console.log(`${configurationName} ending`);
+    return results;
 }

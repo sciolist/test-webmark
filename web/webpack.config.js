@@ -2,8 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const glob = require('glob');
 const path = require('path');
-
-const RESULTS = glob.sync(path.join(__dirname, '../out/*.json')).map(p => path.basename(p, '.json'));
+const DIRECTORY = path.resolve(__dirname, process.env.DIRECTORY || '../out');
 
 module.exports = {
     mode: process.env.NODE_ENV || 'development',
@@ -12,11 +11,19 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js']
     },
+    output: {
+        path: path.resolve(DIRECTORY, 'web')
+    },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                loader: 'babel-loader'
+                use: {
+                  loader: 'babel-loader',
+                  options: {
+                    rootMode: 'upward'
+                  }
+                }
             },
             {
                 test: /\.css$/,
@@ -29,7 +36,7 @@ module.exports = {
             title: 'webmark results'
         }),
         new webpack.DefinePlugin({
-            'process.env.RESULTS': JSON.stringify(JSON.stringify(RESULTS))
+            'process.env.DIRECTORY': JSON.stringify(DIRECTORY)
         })
     ]
 }

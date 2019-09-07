@@ -5,7 +5,7 @@ export const appState = observable({
     selectedTest: ''
 });
 
-const ctx = require.context('../out', true, /\.json$/);
+const ctx = require.context(process.env.DIRECTORY, true, /\.json$/);
 export let results: IConfiguration = {};
 ctx.keys().forEach(k => {
     const tests = ctx(k);
