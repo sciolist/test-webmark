@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS "public"."fortunes";
+
 CREATE TABLE "public"."fortunes" (
     "id" serial,
     "message" text,

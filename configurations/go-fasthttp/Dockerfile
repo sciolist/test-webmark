@@ -1,7 +1,6 @@
 FROM golang:1.12
-WORKDIR /fasthttp
+WORKDIR /app
 
-RUN mkdir bin
 ENV GOPATH /app
 ENV PATH ${GOPATH}/bin:${PATH}
 

@@ -48,7 +48,7 @@ fn helloworld(_: HttpRequest) -> std::string::String {
 
 fn main() -> std::io::Result<()> {
     let sys = actix_rt::System::builder().stop_on_panic(false).build();
-    const DB_URL: &str = "postgres://app:app@db/app";
+    const DB_URL: &str = "postgres://";
 
     Server::build()
         .backlog(1024)

@@ -19,9 +19,6 @@ namespace aspnetapp
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureLogging(config => {
-                    config.ClearProviders();
-                })
                 .UseUrls("http://0.0.0.0:3000")
                 .UseStartup<Startup>();
     }

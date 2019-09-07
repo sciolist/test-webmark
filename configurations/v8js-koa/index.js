@@ -2,7 +2,7 @@ const Koa = require('koa');
 const KoaRouter = require('@koa/router');
 const { Pool } = require('pg');
 
-const pool = new Pool({ connectionString: 'postgres://app:app@db/app' });
+const pool = new Pool({});
 const router = new KoaRouter();
 
 router.get('/helloworld', async ctx => {

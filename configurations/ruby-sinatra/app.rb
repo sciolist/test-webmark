@@ -7,7 +7,7 @@ set :logging, false
 set :port, 3000
 
 $pg = ConnectionPool.new(size: 5, timeout: 5) do
-    PG.connect :host => 'db', :dbname => 'app', :user => 'app', :password => 'app'
+    PG.connect
 end
 
 def list sql

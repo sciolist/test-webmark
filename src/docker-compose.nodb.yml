@@ -1,7 +1,6 @@
 version: "3"
 services:
   api:
-    depends_on: [db]
     build: "${ROOT}/configurations/${CONFIGURATION}"
     ports:
       - 3000:3000
@@ -12,8 +11,4 @@ services:
       PGPASSWORD: "${PGPASSWORD}"
       PGDATABASE: "${PGDATABASE}"
       PGCONNSTRING: "postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}"
-  db:
-    build: "${ROOT}/database"
-    environment:
-      POSTGRES_USER: "${PGUSER}"
-      POSTGRES_PASSWORD: "${PGPASSWORD}"
+

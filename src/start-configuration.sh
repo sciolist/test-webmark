@@ -1,15 +1,26 @@
 #!/bin/sh
 set -ue
 export ROOT="$(cd $(dirname $(dirname "$0")) && pwd)"
+COMPOSEFILE="docker-compose.nodb.yml"
+
+if [ -z "${PGHOST:-}" ]
+then
+    PGUSER="app"
+    PGPASSWORD="app"
+    PGDATABASE="app"
+    PGHOST="db"
+    PGPORT="5432"
+    COMPOSEFILE="docker-compose.yml"
+fi
 
 docker ps -q | while read id
 do
     docker stop "$id"
 done
 
-docker-compose --project-directory "${ROOT}" build >&2
-docker-compose --project-directory "${ROOT}" up --detach --force-recreate --remove-orphans
-container_id=$(docker-compose --project-directory "${ROOT}" ps -q api)
+docker-compose --project-directory "${ROOT}" --file "${COMPOSEFILE}" build >&2
+docker-compose --project-directory "${ROOT}" --file "${COMPOSEFILE}"  up --detach --force-recreate --remove-orphans
+container_id=$(docker-compose --project-directory "${ROOT}" --file "${COMPOSEFILE}"  ps -q api)
 echo "CONTAINER=$container_id"
 
 while true

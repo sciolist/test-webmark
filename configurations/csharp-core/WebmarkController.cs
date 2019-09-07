@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,14 @@ namespace aspnetapp.Controllers
 
         public WebmarkController(IConfiguration configuration)
         {
-            connectionString = configuration.GetValue<string>("DBInfo:ConnectionString");
+            var pguser = Environment.GetEnvironmentVariable("PGUSER");
+            var pgpassword = Environment.GetEnvironmentVariable("PGPASSWORD");
+            var pghost = Environment.GetEnvironmentVariable("PGHOST");
+            var pgport = Environment.GetEnvironmentVariable("PGPORT");
+            var pgdatabase = Environment.GetEnvironmentVariable("PGDATABASE");
+            var pgsslmode = Environment.GetEnvironmentVariable("PGSSLMODE");
+            if (pgsslmode == "require") pgsslmode = "Require";
+            connectionString = $"SSL Mode={pgsslmode};User ID={pguser};Password={pgpassword};Host={pghost};Port={pgport};Database={pgdatabase};Pooling=true;Trust Server Certificate=true;";
         }
 
         private IDbConnection GetConnection()

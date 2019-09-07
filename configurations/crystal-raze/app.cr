@@ -2,7 +2,7 @@ require "raze"
 require "db"
 require "pg"
 
-CONN = DB.open "postgres://app:app@db/app"
+CONN = DB.open "postgres://#{ENV["PGUSER"]}:#{ENV["PGPASSWORD"]}@#{ENV["PGHOST"]}:#{ENV["PGPORT"]}/#{ENV["PGDATABASE"]}"
 
 get "/helloworld" do |ctx|
   "Hello, world"

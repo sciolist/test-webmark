@@ -3,6 +3,7 @@ extern crate r2d2;
 extern crate r2d2_postgres;
 extern crate serde_json;
 #[macro_use] extern crate serde_derive;
+use std::env;
 use postgres::{NoTls};
 use nickel::Nickel;
 use r2d2_postgres::PostgresConnectionManager;
@@ -14,8 +15,9 @@ struct Fortune {
 }
 
 fn main() {
+    let database_url = env::var("PGCONNSTRING").expect("PGCONNSTRING missing");
     let manager = PostgresConnectionManager::new(
-        "host=db user=app password=app".parse().unwrap(),
+        database_url.parse().unwrap(),
         NoTls,
     );
     let pool = r2d2::Pool::new(manager).unwrap();

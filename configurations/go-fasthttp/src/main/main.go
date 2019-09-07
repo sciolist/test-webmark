@@ -29,12 +29,11 @@ func main() {
 
 	var err error
 	var config pgx.ConnPoolConfig
-	config.Host = "db"
-	config.User = "app"
-	config.Password = "app"
-	config.Database = "app"
-	config.Port = 5432
-	config.MaxConnections = runtime.NumCPU()
+	config.ConnConfig, err = pgx.ParseEnvLibpq()
+	if err != nil {
+		log.Fatalf("Error getting database config: %s", err)
+	}
+	config.MaxConnections = 50 / runtime.NumCPU()
 	pool, err := pgx.NewConnPool(config)
 	db = pool
 
