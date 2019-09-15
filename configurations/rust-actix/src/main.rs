@@ -1,4 +1,5 @@
 #[macro_use] extern crate serde_derive;
+use std::env;
 use actix::prelude::*;
 use actix_http::{HttpService, KeepAlive};
 use actix_server::Server;
@@ -48,12 +49,12 @@ fn helloworld(_: HttpRequest) -> std::string::String {
 
 fn main() -> std::io::Result<()> {
     let sys = actix_rt::System::builder().stop_on_panic(false).build();
-    const DB_URL: &str = "postgres://";
 
     Server::build()
         .backlog(1024)
         .bind("app", "0.0.0.0:3000", || {
-            let addr = PgConnection::connect(DB_URL);
+            let database_url = env::var("PGCONNSTRING").expect("PGCONNSTRING missing");
+            let addr = PgConnection::connect(&database_url);
             HttpService::build().keep_alive(KeepAlive::Os).h1(App::new()
                 .data(addr)
                 .service(web::resource("/helloworld").to(helloworld))

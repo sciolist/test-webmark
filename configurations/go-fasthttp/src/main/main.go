@@ -33,7 +33,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error getting database config: %s", err)
 	}
-	config.MaxConnections = 50 / runtime.NumCPU()
+	config.MaxConnections = runtime.NumCPU() * 8
 	pool, err := pgx.NewConnPool(config)
 	db = pool
 

@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { observer, computed } from 'iaktta.preact';
-import { results, appState } from '../../Results';
+import { results, appState, TestInfo } from '../../Results';
 import * as css from './ListResults.css';
 
 @observer
@@ -18,6 +18,32 @@ export class ListResults extends Component {
         });
         all.sort((a, b) => b.pct - a.pct);
         return all;
+    }
+
+    cpuUsage(row: TestInfo) {
+        let total = 0, count = 0;
+        for (const sample of row.samples) {
+            if (!sample.precpu_stats) continue;
+            const cpuusage = sample.cpu_stats.cpu_usage.total_usage - sample.precpu_stats.cpu_usage.total_usage;
+            const sysusage = sample.cpu_stats.system_cpu_usage - sample.precpu_stats.system_cpu_usage;
+            const dockerusage = (cpuusage / sysusage) * 100;
+            total += dockerusage;
+            count += 1;
+        }
+        return `${Math.round(total / count)}%`;
+    }
+
+    memUsage(row: TestInfo) {
+        let total = 0, count = 0;
+        for (const sample of row.samples) {
+            total += sample.memory_stats.usage;
+            count += 1;
+        }
+        return `${Math.round((total / count) / 1024768)} MB`;
+    }
+
+    xpuUsage(row: TestInfo) {
+        return `${Math.floor(row.latency.p50)} ms`;
     }
     
     render() {
@@ -39,8 +65,10 @@ export class ListResults extends Component {
                             {pct}%
                         </div>
                     </td>
-                    <td style={{ textAlign: 'right' }}>{Math.floor(row.test.requests.mean)}</td>
-                    <td style={{ textAlign: 'right' }}>{mb} MB</td>
+                    <td style={{ textAlign: 'right' }}>{Math.floor(row.test.requests.total)}</td>
+                    <td style={{ textAlign: 'right' }}>{this.memUsage(row.test)}</td>
+                    <td style={{ textAlign: 'right' }}>{this.cpuUsage(row.test)}</td>
+                    <td style={{ textAlign: 'right' }}>{this.xpuUsage(row.test)}</td>
                 </tr>
             )
         }
@@ -51,8 +79,11 @@ export class ListResults extends Component {
                     <tr>
                         <th>language</th>
                         <th>framework</th>
-                        <th colSpan={2}>requests per second</th>
-                        <th style={{ textAlign: 'right' }}>max memory usage</th>
+                        <th>rank</th>
+                        <th style={{ textAlign: 'right' }}>req</th>
+                        <th style={{ textAlign: 'right' }}>avg memory usage</th>
+                        <th style={{ textAlign: 'right' }}>avg cpu usage</th>
+                        <th style={{ textAlign: 'right' }}>avg latency</th>
                     </tr>
                 </thead>
 

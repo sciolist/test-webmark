@@ -1,8 +1,11 @@
 const Koa = require('koa');
 const KoaRouter = require('@koa/router');
 const { Pool } = require('pg');
+const os = require('os');
 
-const pool = new Pool({});
+const pool = new Pool({
+	max: Math.floor(100000 / os.cpus().length)
+});
 const router = new KoaRouter();
 
 router.get('/helloworld', async ctx => {

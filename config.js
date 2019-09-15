@@ -4,7 +4,16 @@ module.exports = {
         "type": "hostlist",
         "hosts": [
             {
-                "URL": `http://localhost:3000`
+                "URL": `http://localhost:3000`,
+                "database": {
+                    "PGMAXCONNECTIONS": "99000",
+                    "PGUSER": "benchy",
+                    "PGPASSWORD": "benchy",
+                    "PGDATABASE": "benchy",
+                    "PGHOST": "159.89.106.53",
+                    "PGPORT": "5432",
+                    "PGSSLMODE": "prefer"
+                }
             }
         ]
     }

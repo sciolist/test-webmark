@@ -11,4 +11,5 @@ export async function setupDatabase(host: IDockerhost) {
     const pgp = pg()({});
     const conn = await pgp.connect();
     await conn.query(dbsetup.toString());
+    conn.done();
 }

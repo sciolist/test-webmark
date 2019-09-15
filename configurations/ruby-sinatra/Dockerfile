@@ -5,4 +5,4 @@ COPY Gemfile .
 COPY Gemfile.lock .
 RUN bundle install
 COPY . .
-CMD ruby app.rb
+CMD unicorn -o 0.0.0.0 -p 3000 -E production  -c config/unicorn.rb ./app.rb

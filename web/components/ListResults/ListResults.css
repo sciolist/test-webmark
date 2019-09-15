@@ -26,10 +26,25 @@
     display: flex;
 }
 
-.table {
+.table, .table thead, .table tbody {
     border-collapse: collapse;
     width: 100%;
+    display: contents;
 }
+
+.table tr {
+    display: grid;
+    grid-template-columns: 
+        minmax(50px, 1fr)
+        minmax(50px, 1fr)
+        minmax(50px, 5fr)
+        minmax(50px, 1fr)
+        minmax(50px, 1fr)
+        minmax(50px, 1fr)
+        minmax(50px, 1fr)
+        ;
+}
+
 
 .table > tbody > tr:nth-child(2n) {
     background: #f9f9f9;
