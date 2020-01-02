@@ -5,19 +5,8 @@ require 'connection_pool'
 class App < Sinatra::Base
     set :logging, false
 
-    $pg = ConnectionPool.new(size: 5, timeout: 5) do
+    $pg = ConnectionPool.new(size: 30, timeout: 5) do
         PG.connect
-    end
-
-    def list sql
-        items = []
-        $pg.with do |conn|
-            rs = conn.exec sql
-            rs.each do |row|
-                items << row
-            end
-        end
-        items
     end
 
     get '/helloworld' do
@@ -25,11 +14,15 @@ class App < Sinatra::Base
     end
 
     get '/10-fortunes' do
-        list("select id, message from fortunes limit 10").to_json
+        $pg.with do |conn|
+            conn.exec("select id, message from fortunes limit 10").to_a.to_json
+        end
     end
 
     get '/all-fortunes' do
-        list("select id, message from fortunes").to_json
+        $pg.with do |conn|
+            conn.exec("select id, message from fortunes").to_a.to_json
+        end
     end
 
     get '/primes' do
