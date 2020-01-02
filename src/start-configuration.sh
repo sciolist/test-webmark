@@ -25,10 +25,10 @@ do
     container_id=$(docker-compose --project-directory "${ROOT}" --file "${COMPOSEFILE}"  ps -q api)
     echo "CONTAINER=$container_id"
 
-    iter = 0
+    iter=0
     while [ $iter -lt 10 ]
     do
-        let iter = iter + 1
+        iter=$((iter+1))
         code=$(curl --max-time 5.5 -sL -w "%{http_code}\\n" "$URL/10-fortunes" -o /dev/null || true)
         if [ $code -eq 200 ]
         then
