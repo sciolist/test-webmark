@@ -21,7 +21,7 @@ async function getStats(dh: IDockerhost, containerId: string) {
     return JSON.parse(res.body);
 }
 
-async function runTestIteration(host: IDockerhost, containerId: string, testName: string, testConfiguration: any) {
+async function runTestIteration(pass: number, host: IDockerhost, containerId: string, testName: string, testConfiguration: any) {
     let done = false;
     let mem_usage = -1;
     let samples = [];
@@ -30,10 +30,10 @@ async function runTestIteration(host: IDockerhost, containerId: string, testName
         timeout: duration * 3,
         connections: connections,
         threads: threads,
-        duration: duration
+        duration: pass === 0 ? 3 : duration
     });
     autocannon.track(instance, {
-        renderProgressBar: false,
+        renderProgressBar: true,
         renderResultsTable: false,
         renderLatencyTable: false
     })
@@ -79,7 +79,7 @@ export async function run(configurationName, host: IDockerhost) {
     for (const [testName, testConfig] of Object.entries(tests)) {
         console.log(`${configurationName}: test ${testName} is starting`);
         for (let i=0; i<2; ++i) {
-            const result = await runTestIteration(host, containerId, testName, testConfig);
+            const result = await runTestIteration(i, host, containerId, testName, testConfig);
             results[testName] = result;
         }
         console.log(`${configurationName}: test ${testName} is ending`);
