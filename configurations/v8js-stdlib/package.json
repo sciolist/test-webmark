@@ -1,0 +1,16 @@
+{
+  "name": "node-benchmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^7.17.0",
+    "pg-native": "^3.0.0",
+    "throng": "^4.0.0"
+  }
+}
