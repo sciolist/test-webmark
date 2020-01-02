@@ -34,7 +34,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error getting database config: %s", err)
 	}
-	config.MaxConnections = 50 / runtime.NumCPU()
+	config.MaxConnections = 500 / runtime.NumCPU()
 	pool, err := pgx.NewConnPool(config)
 	db = pool
 
@@ -60,7 +60,6 @@ func helloworldHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func primesHandler(w http.ResponseWriter, r *http.Request) {
-	list := []string{}
 	for test := 0; test <= 10000; test++ {
 		ok := true
 		for v := 2; v < test; v++ {
@@ -71,10 +70,9 @@ func primesHandler(w http.ResponseWriter, r *http.Request) {
 			break;
 		}
 		if (ok) {
-			list = append(list, strconv.Itoa(test));
+			fmt.Fprint(w, "\n", test);
 		}
 	}
-    io.WriteString(w,strings.Join(list, "\n"))
 }
 
 func fortuneHandler(w http.ResponseWriter, r *http.Request) {
