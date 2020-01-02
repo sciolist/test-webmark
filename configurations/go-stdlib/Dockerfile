@@ -1,12 +1,9 @@
 FROM golang:1.12
 WORKDIR /app
 
-RUN mkdir bin
-ENV GOPATH /app
-ENV PATH ${GOPATH}/bin:${PATH}
+COPY go.mod go.sum ./
+RUN go mod download
 
-RUN go get -d -u github.com/jackc/pgx
-
-COPY . .
-RUN go build -gcflags='-l=4' main
+COPY *.go start.sh ./
+RUN go build -gcflags='-l=4' -o main
 CMD bash start.sh

@@ -84,7 +84,7 @@ func primesHandler(ctx *fasthttp.RequestCtx) {
 		}
 	}
 	
-	ctx.SetContentType("application/json")
+	ctx.SetContentType("text/plain")
 	ctx.WriteString(strings.Join(list,"\n"))
 }
 
