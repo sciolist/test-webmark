@@ -52,9 +52,9 @@ export class ListResults extends Component {
             const np = row.name.split('-');
             const mb = (row.test.mem_usage / 1024768) | 0;
             const pct = (row.pct * 100) | 0;
-            const hasError = row.test.non2xx > 0 || row.test.errors > 0;
+            const errorCount = row.test.non2xx + row.test.errors;
             rows.push(
-                <tr key={row.name} className={hasError ? css.error : ''}>
+                <tr key={row.name} title={`${errorCount} requests returned errors`} className={errorCount ? css.error : ''}>
                     <td>{np[0]}</td>
                     <td>{np[1]}</td>
                     <td className={css.requests}>
