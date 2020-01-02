@@ -13,6 +13,7 @@ services:
       PGDATABASE: "${PGDATABASE}"
       PGCONNSTRING: "postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}"
   db:
+    command: "postgres -N 500"
     build: "${ROOT}/database"
     environment:
       POSTGRES_USER: "${PGUSER}"
