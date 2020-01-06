@@ -8,7 +8,7 @@ targets:
 dependencies:
   pg:
     github: will/crystal-pg
-    version: 0.15.0
+    version: 0.20.0
   raze:
     github: samueleaton/raze
     version: 0.3.0
