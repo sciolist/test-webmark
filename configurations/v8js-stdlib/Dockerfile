@@ -1,6 +1,6 @@
 FROM node:13
-COPY package.json .
-#COPY package-lock.json .
+WORKDIR /app
+COPY package* ./
 RUN npm install
 COPY . .
-CMD node cluster.js
+CMD bash start.sh
