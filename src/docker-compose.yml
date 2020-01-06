@@ -5,6 +5,8 @@ services:
     build: "${ROOT}/configurations/${CONFIGURATION}"
     ports:
       - 3000:3000
+    volumes:
+      - "${ROOT}/configurations/${CONFIGURATION}:/src"
     environment:
       PGHOST: "${PGHOST}"
       PGPORT: "${PGPORT}"
