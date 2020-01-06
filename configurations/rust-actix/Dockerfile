@@ -1,6 +1,6 @@
-FROM rust:1.37
-COPY Cargo.toml .
-COPY Cargo.lock .
+FROM rust:1.40.0
+WORKDIR /app
+COPY Cargo* ./
 RUN mkdir src && echo "fn main() { }" > src/main.rs
 RUN cargo build --release
 RUN rm ./target/release/app*
