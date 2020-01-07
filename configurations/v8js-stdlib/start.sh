@@ -1,3 +1,3 @@
 #!/bin/bash
 cp package-lock.json /src
-node cluster.js
+NODE_ENV=production node cluster.js

@@ -3,7 +3,7 @@ const http = require('http');
 const os = require('os');
 
 const pool = new Pool({
-    max: Math.floor(500 / (os.cpus()))
+    max: Math.floor(500 / (os.cpus() * 3))
 });
 
 const routes = {};
