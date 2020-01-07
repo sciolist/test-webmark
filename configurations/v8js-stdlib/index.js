@@ -3,21 +3,24 @@ const http = require('http');
 const os = require('os');
 
 const pool = new Pool({
-	max: Math.floor(500 / (os.cpus() * 3))
+    max: Math.floor(500 / (os.cpus()))
 });
 
 const routes = {};
+const HelloWorld = new Buffer('Hello, world!');
 routes['/helloworld'] = async function (req, res) {
-    res.end('Hello, world!');
+    res.end(HelloWorld);
 }
 
+const fortunes10 = { name: 'q10', text: 'select id, message from fortunes limit 10' };
 routes['/10-fortunes'] = async function (req, res) {
-    const result = await pool.query({ name: 'q10', text: 'select id, message from fortunes limit 10' });
+    const result = await pool.query(fortunes10);
     res.end(JSON.stringify(result.rows));
 }
 
+const fortunesall = { name: 'qall', text: 'select id, message from fortunes' };
 routes['/all-fortunes'] = async function (req, res) {
-    const result = await pool.query({ name: 'qall', text: 'select id, message from fortunes' });
+    const result = await pool.query(fortunesall);
     res.end(JSON.stringify(result.rows));
 }
 
@@ -37,10 +40,11 @@ routes['/404'] = async function (req, res) {
     res.end();
 }
 
-http.createServer(function (req, res) {
+const server = http.createServer(function (req, res) {
     const route = routes[req.url] || routes['/404'];
     route(req, res).catch(function () {
         res.statusCode = 500;
         res.end();
     });
-}).listen(3000);
+});
+server.listen(3000);
