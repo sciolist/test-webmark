@@ -30,7 +30,7 @@ export class ListResults extends Component {
             total += dockerusage;
             count += 1;
         }
-        return `${Math.round(total / count)}%`;
+        return Math.round(total / count);
     }
 
     memUsage(row: TestInfo) {
@@ -51,7 +51,7 @@ export class ListResults extends Component {
         for (const row of this.items) {
             const np = row.name.split('-');
             const mb = (row.test.mem_usage / 1024768) | 0;
-            const pct = (row.pct * 100) | 0;
+            const pct = ((row.pct * 100) | 0);
             const errorCount = row.test.non2xx + row.test.errors;
             rows.push(
                 <tr key={row.name} title={`${errorCount} requests returned errors`} className={errorCount ? css.error : ''}>
@@ -65,10 +65,10 @@ export class ListResults extends Component {
                             {pct}%
                         </div>
                     </td>
-                    <td style={{ textAlign: 'right' }}>{Math.floor(row.test.requests.total)}</td>
-                    <td style={{ textAlign: 'right' }}>{this.memUsage(row.test)}</td>
-                    <td style={{ textAlign: 'right' }}>{this.cpuUsage(row.test)}</td>
-                    <td style={{ textAlign: 'right' }}>{this.xpuUsage(row.test)}</td>
+                    <td style={{ justifyContent: 'flex-end' }}>{Math.floor(row.test.requests.total)}</td>
+                    <td style={{ justifyContent: 'flex-end' }}>{this.memUsage(row.test)}</td>
+                    <td style={{ justifyContent: 'flex-end' }}>{this.cpuUsage(row.test)}%</td>
+                    <td style={{ justifyContent: 'flex-end' }}>{this.xpuUsage(row.test)}</td>
                 </tr>
             )
         }
@@ -80,10 +80,10 @@ export class ListResults extends Component {
                         <th>language</th>
                         <th>framework</th>
                         <th>rank</th>
-                        <th style={{ textAlign: 'right' }}>req</th>
-                        <th style={{ textAlign: 'right' }}>avg memory usage</th>
-                        <th style={{ textAlign: 'right' }}>avg cpu usage</th>
-                        <th style={{ textAlign: 'right' }}>avg latency</th>
+                        <th style={{ textAlign: 'right', justifyContent: 'flex-end' }}>req</th>
+                        <th style={{ textAlign: 'right', justifyContent: 'flex-end' }}>avg memory usage</th>
+                        <th style={{ textAlign: 'right', justifyContent: 'flex-end' }}>avg cpu usage</th>
+                        <th style={{ textAlign: 'right', justifyContent: 'flex-end' }}>avg latency</th>
                     </tr>
                 </thead>
 

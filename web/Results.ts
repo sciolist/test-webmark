@@ -5,12 +5,18 @@ export const appState = observable({
   selectedTest: ""
 });
 
-const ctx = require.context(process.env.DIRECTORY, false, /\.json$/);
+const ctx = require.context(process.env.DIRECTORY, true, /\.json$/);
 export let results: Configuration = {};
 ctx.keys().forEach(k => {
-  const tests = ctx(k);
-  appState.selectedTest = Object.keys(tests)[0];
-  results[path.basename(k, ".json")] = { tests };
+  const testName = path.basename(path.dirname(k));
+  if (testName === '.') return;
+  const cfgName = path.basename(k, ".json");
+  const data = ctx(k);
+  if (!appState.selectedTest) {
+    appState.selectedTest = testName;
+  }
+  if (!results[cfgName]) results[cfgName] = { tests: {} };
+  results[cfgName].tests[testName] = data;
 });
 
 export interface Configuration {

@@ -1,15 +1,9 @@
 import { IDockerhost } from '../docker/pool';
-import cp from 'child_process';
 import got from 'got';
 import autocannon from 'autocannon';
 import { tests, connections, threads, duration } from './tests';
 
 const sleep = ms => new Promise(s => setTimeout(s, ms));
-async function waitForExit(proc, cfg) {
-    return new Promise((res, rej) => proc.once('exit', (code, c) => {
-        code ? rej(new Error(`${cfg} process failed with code ${code}`)) : res()
-    }));
-}
 
 async function getStats(dh: IDockerhost, containerId: string) {
     let host = (dh.DOCKER_HOST || 'unix:/var/run/docker.sock').replace(/^tcp:/, 'http:');
@@ -30,6 +24,7 @@ async function runTestIteration(pass: number, host: IDockerhost, containerId: st
         timeout: duration * 3,
         connections: connections,
         threads: threads,
+        pipelining: 10,
         duration: pass === 0 ? 3 : duration
     });
     autocannon.track(instance, {
@@ -48,40 +43,16 @@ async function runTestIteration(pass: number, host: IDockerhost, containerId: st
     return { ...output, samples, mem_usage };
 }
 
-async function startContainers(host: IDockerhost, configurationName: string) {
-    const env = {
-        ...process.env,
-        ...host,
-        ...(host.database || {}),
-        CONFIGURATION: configurationName
-    };
-    let containerId = "-1";
-    const proc = cp.execFile('sh', [__dirname + '/start-configuration.sh'], {
-        cwd: __dirname,
-        env
-    });
-    proc.stderr.pipe(process.stderr);
-    proc.stdout.on('data', d => {
-        const str = d.toString();
-        if (/^CONTAINER=/.test(str)) {
-            containerId = str.split('=')[1].trim();
-        }
-    });
-    proc.stdout.pipe(process.stdout);
-    await waitForExit(proc, configurationName);
-    return containerId;
-}
-
-export async function run(configurationName, host: IDockerhost) {
+export async function *run(containerId, configurationName, host: IDockerhost) {
     console.log(`${configurationName} starting on ${host.URL}`);
-    const containerId = await startContainers(host, configurationName);
     let results = {};
     for (const [testName, testConfig] of Object.entries(tests)) {
         console.log(`${configurationName}: test ${testName} is starting`);
+        let data = {};
         for (let i=0; i<2; ++i) {
-            const result = await runTestIteration(i, host, containerId, testName, testConfig);
-            results[testName] = result;
+            data = await runTestIteration(i, host, containerId, testName, testConfig);
         }
+        yield { testName, data };
         console.log(`${configurationName}: test ${testName} is ending`);
     }
     console.log(`${configurationName} ending`);
