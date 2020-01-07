@@ -3,8 +3,7 @@ package main
 import (
 	"net/http"
 	"io"
-	"strconv"
-	"strings"
+	"fmt"
 	"flag"
 	"log"
 	"runtime"
