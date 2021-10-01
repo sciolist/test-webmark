@@ -1,0 +1,54 @@
+#!/bin/bash
+# Attempt to create digitalocean droplet, and generate a new config
+# Note that these are fairly pricey droplets and they are NOT automatically destroyed
+set -ue
+cd "$(dirname $0)"
+
+# allow all ssh keys from the server
+ssh_keys=$(doctl compute ssh-key list --output json | jq 'map(.id) | join(",")')
+
+# digitalocean region
+region="fra1"
+
+echo "creating droplet"
+server_info=$(
+    doctl compute droplet create \
+    --region $region \
+    --user-data-file digitalocean-userdata.sh \
+    --image ubuntu-20-10-x64 \
+    --size c-32 \
+    --tag-name webmark-temp \
+    --ssh-keys "$ssh_keys" \
+    --output json \
+    --wait \
+    webmark-server
+)
+SERVER_PUBLIC=$(echo "$server_info" | jq '.[].networks.v4 | .[] | select(.type | contains("public")) | .ip_address' -r)
+SERVER_PRIVATE=$(echo "$server_info" | jq '.[].networks.v4 | .[] | select(.type | contains("private")) | .ip_address' -r)
+
+echo "
+export DOCKER_HOST=\"ssh://root@$SERVER_PUBLIC\"
+export LOAD_DOCKER_HOST=\"ssh://root@$SERVER_PUBLIC\"
+" > "./digitalocean-config"
+
+set +e
+
+test_connection() {
+    while true
+    do
+        ssh "root@$1" true && break
+        echo retrying...
+        sleep 3
+    done
+    while true
+    do
+        DOCKER_HOST="ssh://root@$1" docker ps && break
+        echo retrying...
+        sleep 3
+    done
+}
+
+echo "checking connection to server"
+test_connection "$SERVER_PUBLIC"
+
+echo "digitalocean setup complete, run 'source ./utils/digitalocean-config' to configure your environment"

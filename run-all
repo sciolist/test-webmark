@@ -1,0 +1,11 @@
+#!/bin/bash
+# Run all tests for all configurations
+set -ue
+cd "$(dirname $0)"
+# loop through all configurations
+ls ./configurations/ |
+while read config
+do
+    # and run that configuration
+    ./run-configuration "$config"
+done

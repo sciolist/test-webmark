@@ -1,0 +1,17 @@
+#!/bin/bash
+# Run all tests for a specific configuration
+set -ue
+cd "$(dirname $0)"
+config="$1"
+echo "running $config tests"
+
+# always clean up when exiting
+trap 'echo stopping $config && ./shutdown' EXIT
+
+# run each test
+cat './tests' |
+while read testname
+do
+    echo "starting test $testname"
+    ./run-test "$config" "$testname"
+done

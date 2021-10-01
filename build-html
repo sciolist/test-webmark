@@ -1,0 +1,4 @@
+#!/bin/bash
+set -ue
+DOCKER_HOST="" docker run -v "$(pwd):/app" node:16 node /app/build-html.js > result.html
+echo "created result.html"

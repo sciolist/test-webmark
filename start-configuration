@@ -1,0 +1,27 @@
+#!/bin/bash
+set -ue
+cd "$(dirname $0)"
+# start by killing any old running configuration
+./shutdown 2>/dev/null || true
+# make sure there's a webmark network created
+NETWORK_ID=$(docker network ls --filter 'name=webmark' -q)
+[ -z "$NETWORK_ID" ] && docker network create webmark
+# start postgres instance
+./start-database
+CONFIG="$1"
+WEBMARKDB_CONNECT="${WEBMARKDB_CONNECT=_none:0.0.0.0}"
+
+echo "building $CONFIG"
+docker build "./configurations/$CONFIG" --tag webmark-server-img
+
+docker rm webmark-server 2>/dev/null >/dev/null || true || true
+
+# start container
+echo "creating $CONFIG container"
+docker run \
+    --rm --detach \
+    --add-host "$WEBMARKDB_CONNECT" \
+    --network webmark \
+    --name webmark-server \
+    --publish 3000:3000 \
+    webmark-server-img

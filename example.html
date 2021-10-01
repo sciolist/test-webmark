@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>webmark results</title>
+        <style>
+            body { color: #dbdbdb; background: #202b38; max-width: 1024px; margin: 32px auto 96px; font-family: system-ui, sans-serif; }
+            table { width: 100%; border: 3px inset #ccc; border-collapse: collapse; }
+            thead { background: teal; }
+            th, td { border: 1px inset #ccc; text-align: left; padding: 8px; }
+            .errors { background: rgba(255, 0, 0, 0.2); }
+            .perf { background: orange; height: 16px; }
+            .configs { display: grid; grid-template-columns: 1fr 1fr 1fr; margin-bottom: 24px; gap: 8px; }
+            td.num { text-align: right; font-family: Menlo, monospace; }
+            h1 { text-transform: capitalize; }
+        </style>
+    </head>
+    <body>
+
+    <div class="configs">
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="crystal-stdlib" /> crystal-stdlib</label>
+        <style>.hide-crystal-stdlib .crystal-stdlib { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="csharp-core" /> csharp-core</label>
+        <style>.hide-csharp-core .csharp-core { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="go-fiber" /> go-fiber</label>
+        <style>.hide-go-fiber .go-fiber { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="go-stdlib" /> go-stdlib</label>
+        <style>.hide-go-stdlib .go-stdlib { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="php-stdlib" /> php-stdlib</label>
+        <style>.hide-php-stdlib .php-stdlib { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="ruby-sinatra" /> ruby-sinatra</label>
+        <style>.hide-ruby-sinatra .ruby-sinatra { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="rust-actix" /> rust-actix</label>
+        <style>.hide-rust-actix .rust-actix { display: none; }</style>
+    
+        <label><input type="checkbox" checked onchange="document.body.classList.toggle('hide-'+this.id,!this.checked)" id="v8js-node" /> v8js-node</label>
+        <style>.hide-v8js-node .v8js-node { display: none; }</style>
+    
+    </div>
+
+
+<h1>helloworld</h1>
+<table>
+    <thead>
+        <tr>
+            <th colspan="2" style="width: 20%">Configuration</th>
+            <th colspan="2" style="width: 50%">TPS</th>
+            <th style="width: 10%">Errors</th>
+            <th style="width: 10%">99%<br />Latency</th>
+            <th style="width: 10%">99.99%<br />Latency</th>
+            <th style="width: 10%">Memory</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr class="rust-actix ">
+            <th>rust</th>
+            <th>actix</th>
+            <td style="width: 40%;"><div class="perf" style="width:100%"></div></td>
+            <td class="num">454k</td>
+            <td class="num">0</td>
+            <td class="num">18ms</td>
+            <td class="num">92ms</td>
+            <td class="num">23MB</td>
+        </tr><tr class="crystal-stdlib ">
+            <th>crystal</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:91%"></div></td>
+            <td class="num">412k</td>
+            <td class="num">0</td>
+            <td class="num">28ms</td>
+            <td class="num">124ms</td>
+            <td class="num">144MB</td>
+        </tr><tr class="go-fiber ">
+            <th>go</th>
+            <th>fiber</th>
+            <td style="width: 40%;"><div class="perf" style="width:85%"></div></td>
+            <td class="num">384k</td>
+            <td class="num">0</td>
+            <td class="num">21ms</td>
+            <td class="num">89ms</td>
+            <td class="num">94MB</td>
+        </tr><tr class="go-stdlib ">
+            <th>go</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:74%"></div></td>
+            <td class="num">334k</td>
+            <td class="num">0</td>
+            <td class="num">48ms</td>
+            <td class="num">152ms</td>
+            <td class="num">311MB</td>
+        </tr><tr class="v8js-node ">
+            <th>v8js</th>
+            <th>node</th>
+            <td style="width: 40%;"><div class="perf" style="width:71%"></div></td>
+            <td class="num">322k</td>
+            <td class="num">0</td>
+            <td class="num">41ms</td>
+            <td class="num">256ms</td>
+            <td class="num">812MB</td>
+        </tr><tr class="csharp-core ">
+            <th>csharp</th>
+            <th>core</th>
+            <td style="width: 40%;"><div class="perf" style="width:44%"></div></td>
+            <td class="num">199k</td>
+            <td class="num">0</td>
+            <td class="num">71ms</td>
+            <td class="num">136ms</td>
+            <td class="num">105MB</td>
+        </tr><tr class="php-stdlib ">
+            <th>php</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:19%"></div></td>
+            <td class="num">87k</td>
+            <td class="num">0</td>
+            <td class="num">3997ms</td>
+            <td class="num">4663ms</td>
+            <td class="num">163MB</td>
+        </tr><tr class="ruby-sinatra ">
+            <th>ruby</th>
+            <th>sinatra</th>
+            <td style="width: 40%;"><div class="perf" style="width:4%"></div></td>
+            <td class="num">16k</td>
+            <td class="num">0</td>
+            <td class="num">27645ms</td>
+            <td class="num">28024ms</td>
+            <td class="num">719MB</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>10-fortunes</h1>
+<table>
+    <thead>
+        <tr>
+            <th colspan="2" style="width: 20%">Configuration</th>
+            <th colspan="2" style="width: 50%">TPS</th>
+            <th style="width: 10%">Errors</th>
+            <th style="width: 10%">99%<br />Latency</th>
+            <th style="width: 10%">99.99%<br />Latency</th>
+            <th style="width: 10%">Memory</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr class="rust-actix ">
+            <th>rust</th>
+            <th>actix</th>
+            <td style="width: 40%;"><div class="perf" style="width:100%"></div></td>
+            <td class="num">206k</td>
+            <td class="num">0</td>
+            <td class="num">55ms</td>
+            <td class="num">272ms</td>
+            <td class="num">36MB</td>
+        </tr><tr class="go-fiber ">
+            <th>go</th>
+            <th>fiber</th>
+            <td style="width: 40%;"><div class="perf" style="width:83%"></div></td>
+            <td class="num">170k</td>
+            <td class="num">0</td>
+            <td class="num">94ms</td>
+            <td class="num">378ms</td>
+            <td class="num">294MB</td>
+        </tr><tr class="go-stdlib ">
+            <th>go</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:51%"></div></td>
+            <td class="num">106k</td>
+            <td class="num">0</td>
+            <td class="num">192ms</td>
+            <td class="num">394ms</td>
+            <td class="num">326MB</td>
+        </tr><tr class="crystal-stdlib ">
+            <th>crystal</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:50%"></div></td>
+            <td class="num">103k</td>
+            <td class="num">0</td>
+            <td class="num">196ms</td>
+            <td class="num">631ms</td>
+            <td class="num">160MB</td>
+        </tr><tr class="v8js-node ">
+            <th>v8js</th>
+            <th>node</th>
+            <td style="width: 40%;"><div class="perf" style="width:42%"></div></td>
+            <td class="num">87k</td>
+            <td class="num">0</td>
+            <td class="num">181ms</td>
+            <td class="num">3168ms</td>
+            <td class="num">1881MB</td>
+        </tr><tr class="csharp-core ">
+            <th>csharp</th>
+            <th>core</th>
+            <td style="width: 40%;"><div class="perf" style="width:21%"></div></td>
+            <td class="num">43k</td>
+            <td class="num">0</td>
+            <td class="num">152ms</td>
+            <td class="num">205ms</td>
+            <td class="num">124MB</td>
+        </tr><tr class="php-stdlib ">
+            <th>php</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:16%"></div></td>
+            <td class="num">32k</td>
+            <td class="num">0</td>
+            <td class="num">3984ms</td>
+            <td class="num">4581ms</td>
+            <td class="num">177MB</td>
+        </tr><tr class="ruby-sinatra ">
+            <th>ruby</th>
+            <th>sinatra</th>
+            <td style="width: 40%;"><div class="perf" style="width:7%"></div></td>
+            <td class="num">13k</td>
+            <td class="num">0</td>
+            <td class="num">27564ms</td>
+            <td class="num">28034ms</td>
+            <td class="num">785MB</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>all-fortunes</h1>
+<table>
+    <thead>
+        <tr>
+            <th colspan="2" style="width: 20%">Configuration</th>
+            <th colspan="2" style="width: 50%">TPS</th>
+            <th style="width: 10%">Errors</th>
+            <th style="width: 10%">99%<br />Latency</th>
+            <th style="width: 10%">99.99%<br />Latency</th>
+            <th style="width: 10%">Memory</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr class="rust-actix ">
+            <th>rust</th>
+            <th>actix</th>
+            <td style="width: 40%;"><div class="perf" style="width:100%"></div></td>
+            <td class="num">36k</td>
+            <td class="num">0</td>
+            <td class="num">816ms</td>
+            <td class="num">2424ms</td>
+            <td class="num">76MB</td>
+        </tr><tr class="go-fiber ">
+            <th>go</th>
+            <th>fiber</th>
+            <td style="width: 40%;"><div class="perf" style="width:86%"></div></td>
+            <td class="num">31k</td>
+            <td class="num">0</td>
+            <td class="num">974ms</td>
+            <td class="num">3007ms</td>
+            <td class="num">665MB</td>
+        </tr><tr class="go-stdlib ">
+            <th>go</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:57%"></div></td>
+            <td class="num">21k</td>
+            <td class="num">0</td>
+            <td class="num">1303ms</td>
+            <td class="num">3749ms</td>
+            <td class="num">618MB</td>
+        </tr><tr class="crystal-stdlib ">
+            <th>crystal</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:51%"></div></td>
+            <td class="num">18k</td>
+            <td class="num">0</td>
+            <td class="num">1474ms</td>
+            <td class="num">3508ms</td>
+            <td class="num">227MB</td>
+        </tr><tr class="v8js-node ">
+            <th>v8js</th>
+            <th>node</th>
+            <td style="width: 40%;"><div class="perf" style="width:43%"></div></td>
+            <td class="num">15k</td>
+            <td class="num">0</td>
+            <td class="num">1585ms</td>
+            <td class="num">3912ms</td>
+            <td class="num">3694MB</td>
+        </tr><tr class="csharp-core ">
+            <th>csharp</th>
+            <th>core</th>
+            <td style="width: 40%;"><div class="perf" style="width:41%"></div></td>
+            <td class="num">15k</td>
+            <td class="num">0</td>
+            <td class="num">949ms</td>
+            <td class="num">2043ms</td>
+            <td class="num">1075MB</td>
+        </tr><tr class="php-stdlib ">
+            <th>php</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:28%"></div></td>
+            <td class="num">10k</td>
+            <td class="num">0</td>
+            <td class="num">5479ms</td>
+            <td class="num">6524ms</td>
+            <td class="num">241MB</td>
+        </tr><tr class="ruby-sinatra ">
+            <th>ruby</th>
+            <th>sinatra</th>
+            <td style="width: 40%;"><div class="perf" style="width:16%"></div></td>
+            <td class="num">5920</td>
+            <td class="num">0</td>
+            <td class="num">28078ms</td>
+            <td class="num">28810ms</td>
+            <td class="num">1008MB</td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>primes</h1>
+<table>
+    <thead>
+        <tr>
+            <th colspan="2" style="width: 20%">Configuration</th>
+            <th colspan="2" style="width: 50%">TPS</th>
+            <th style="width: 10%">Errors</th>
+            <th style="width: 10%">99%<br />Latency</th>
+            <th style="width: 10%">99.99%<br />Latency</th>
+            <th style="width: 10%">Memory</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr class="rust-actix ">
+            <th>rust</th>
+            <th>actix</th>
+            <td style="width: 40%;"><div class="perf" style="width:100%"></div></td>
+            <td class="num">1694</td>
+            <td class="num">0</td>
+            <td class="num">3388ms</td>
+            <td class="num">5176ms</td>
+            <td class="num">40MB</td>
+        </tr><tr class="crystal-stdlib errors">
+            <th>crystal</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:97%"></div></td>
+            <td class="num">1643</td>
+            <td class="num">10144</td>
+            <td class="num">540ms</td>
+            <td class="num">10024ms</td>
+            <td class="num">260MB</td>
+        </tr><tr class="csharp-core ">
+            <th>csharp</th>
+            <th>core</th>
+            <td style="width: 40%;"><div class="perf" style="width:94%"></div></td>
+            <td class="num">1592</td>
+            <td class="num">0</td>
+            <td class="num">4476ms</td>
+            <td class="num">4953ms</td>
+            <td class="num">402MB</td>
+        </tr><tr class="v8js-node errors">
+            <th>v8js</th>
+            <th>node</th>
+            <td style="width: 40%;"><div class="perf" style="width:60%"></div></td>
+            <td class="num">1008</td>
+            <td class="num">2016</td>
+            <td class="num">9743ms</td>
+            <td class="num">10418ms</td>
+            <td class="num">676MB</td>
+        </tr><tr class="go-stdlib ">
+            <th>go</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:33%"></div></td>
+            <td class="num">556</td>
+            <td class="num">0</td>
+            <td class="num">13307ms</td>
+            <td class="num">15639ms</td>
+            <td class="num">187MB</td>
+        </tr><tr class="go-fiber ">
+            <th>go</th>
+            <th>fiber</th>
+            <td style="width: 40%;"><div class="perf" style="width:29%"></div></td>
+            <td class="num">494</td>
+            <td class="num">0</td>
+            <td class="num">15246ms</td>
+            <td class="num">16301ms</td>
+            <td class="num">215MB</td>
+        </tr><tr class="php-stdlib errors">
+            <th>php</th>
+            <th>stdlib</th>
+            <td style="width: 40%;"><div class="perf" style="width:9%"></div></td>
+            <td class="num">158</td>
+            <td class="num">5088</td>
+            <td class="num">22936ms</td>
+            <td class="num">26635ms</td>
+            <td class="num">132MB</td>
+        </tr><tr class="ruby-sinatra ">
+            <th>ruby</th>
+            <th>sinatra</th>
+            <td style="width: 40%;"><div class="perf" style="width:3%"></div></td>
+            <td class="num">49</td>
+            <td class="num">0</td>
+            <td class="num">29781ms</td>
+            <td class="num">30037ms</td>
+            <td class="num">693MB</td>
+        </tr>
+    </tbody>
+</table>
+
+    </body>
+</html>
+

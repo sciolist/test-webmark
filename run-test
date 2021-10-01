@@ -1,0 +1,81 @@
+#!/bin/bash
+# Run a single test against the running configuration
+set -ue
+cd "$(dirname $0)"
+# get the id of the started container so we can track its stats
+export CONFIG="$1"
+export TEST_URL="$2"
+LOAD_TARGET="${LOAD_TARGET=http://host.docker.internal:3000/}"
+export FULL_URL="$LOAD_TARGET$TEST_URL"
+export REMOTE_DOCKER="${DOCKER_HOST=}"
+export DOCKER_HOST="${LOAD_DOCKER_HOST=}"
+
+# start up docker container
+./start-configuration "$CONFIG"
+
+# make sure there's a webmark network created
+NETWORK_ID=$(docker network ls --filter 'name=webmark' --quiet)
+[ -z "$NETWORK_ID" ] && docker network create webmark
+
+# build autocannon client
+docker build --file ./autocannon.dockerfile --tag webmark-client-img .
+
+# start autocannon client to run a command
+run_cmd() {
+    docker rm webmark-client 2>/dev/null >/dev/null || true
+    docker run --name webmark-client --network webmark --add-host host.docker.internal:host-gateway webmark-client-img $*
+}
+
+# wait until a single 200 response from the url
+while [ true ]
+do
+    code=$(run_cmd curl --max-time 5.5 -sL -w "%{http_code}\\n" "$FULL_URL" -o /dev/null || true)
+    if [ $code -eq 200 ] || [ $code -eq 404 ]
+    then
+        break
+    else
+        # failed to connect, delay for a bit and try try again
+        echo "waiting for 200 response from $FULL_URL..." >&2
+        sleep 3
+    fi
+done
+
+# run a quick warmup round
+run_cmd autocannon \
+    "$FULL_URL" \
+    --connections 1 \
+    --duration 3 >/dev/null
+sleep 3
+
+run() {
+# repeatedly collect stats from the docker container to track memory and cpu usage
+docker_loop() {
+    while [ true ]
+    do
+        DOCKER_HOST="$REMOTE_DOCKER" docker stats --no-stream --format '{{json .}}' webmark-server
+        sleep 1
+    done
+}
+
+docker_loop &
+
+# run test
+run_cmd autocannon \
+    "$FULL_URL" \
+    --json \
+    --connections 256 \
+    --duration 30 \
+    --workers 32 \
+    --pipelining 16
+
+# kill docker_loop
+kill $(jobs -p)
+
+# make sure docker_loop has ended
+wait
+}
+
+result=$(run)
+mkdir -p "./out/$TEST_URL"
+echo "$result" > "./out/$TEST_URL/$CONFIG.json"
+./build-html

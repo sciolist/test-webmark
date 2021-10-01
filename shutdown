@@ -1,0 +1,33 @@
+#!/bin/bash
+set -ue
+cd "$(dirname $0)"
+
+run_shutdown() {
+# find the webmark network, or exit if it doesnt exist
+NETWORK_ID=$(docker network ls --filter 'name=webmark' --quiet)
+[ -z "$NETWORK_ID" ] && exit 0
+
+# loop through each container associated with the network
+docker network inspect "$NETWORK_ID" --format='{{range $id, $_ := .Containers}}{{println $id}}{{end}}' | awk 'NF' - |
+while read container
+do
+    # and stop the container
+    docker stop "$container"
+done
+
+# finally destroy the network
+docker network rm "$NETWORK_ID"
+}
+
+run_shutdown
+
+if [ "" != "${WEBMARKDB_DOCKER_HOST=}" ]
+then
+    DOCKER_HOST="$WEBMARKDB_DOCKER_HOST" run_shutdown
+fi
+
+if [ "" != "${LOAD_DOCKER_HOST=}" ]
+then
+    DOCKER_HOST="$LOAD_DOCKER_HOST" run_shutdown
+fi
+

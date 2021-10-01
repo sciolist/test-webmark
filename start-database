@@ -1,0 +1,30 @@
+#!/bin/bash
+# Starts postgres database instance
+set -ue
+cd "$(dirname $0)"
+export DOCKER_HOST="${WEBMARKDB_DOCKER_HOST=${DOCKER_HOST=}}"
+
+# check if user does not want a docker database
+if [ "1" == "${WEBMARKDB_OFF=}" ]
+then
+    # if so, assume all is well and exit
+    exit 0
+fi
+
+# make sure there's a webmark network created
+NETWORK_ID=$(docker network ls --filter 'name=webmark' --quiet)
+[ -z "$NETWORK_ID" ] && docker network create webmark
+
+# start postgres and populate with fortunes
+docker build --file ./postgres.dockerfile --tag webmark-db-img .
+
+docker rm webmark-db 2>/dev/null >/dev/null || true || true
+
+docker run \
+    --rm --detach \
+    --network webmark \
+    --network-alias webmarkdb \
+    --name webmark-db \
+    --env POSTGRES_PASSWORD=webmark \
+    --publish 5432:5432 \
+    webmark-db-img

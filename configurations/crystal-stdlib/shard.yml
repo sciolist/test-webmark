@@ -1,0 +1,15 @@
+name: app
+version: 0.1.0
+
+targets:
+  app:
+    main: ./app.cr
+
+dependencies:
+  pg:
+    github: will/crystal-pg
+    version: 0.24.0
+
+crystal: 1.1.1
+
+license: MIT

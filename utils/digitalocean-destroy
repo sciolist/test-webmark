@@ -1,0 +1,8 @@
+#!/bin/bash
+# Attempt to destroy webmark digitalocean droplets
+set -ue
+cd "$(dirname $0)"
+
+echo "Warning, this will delete any digitalocean droplets with the 'webmark-temp' tag."
+
+doctl compute droplet delete --tag-name webmark-temp

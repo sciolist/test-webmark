@@ -1,0 +1,23 @@
+#!/bin/bash
+## this host will run the configurations to be tested
+## by default, this will be localhost
+#export DOCKER_HOST="ssh://10.0.0.1"
+
+## by default the tests will run against host.docker.internal,
+## so for remote hosts this needs to be changed
+#export LOAD_TARGET="http://10.0.0.1:3000/"
+
+## this host will run the postgres database
+## by default, this will be DOCKER_HOST
+#export WEBMARKDB_DOCKER_HOST="ssh://10.0.0.2"
+
+## if the database is run separately, setting this will prevent it from being autostarted
+#export WEBMARKDB_OFF=1
+
+## the servers will attempt to connect to postgres on postgres://webmarkdb
+## this setting changes the mapping if postgres is on a separate docker host
+#export WEBMARKDB_CONNECT="webmarkdb:10.0.0.2"
+
+## this host will run the load testing
+## by default, this will be localhost
+#export LOAD_DOCKER_HOST="ssh://10.0.0.3"
