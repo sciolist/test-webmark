@@ -19,13 +19,16 @@ done
 docker network rm "$NETWORK_ID"
 }
 
+# shut down main server
 run_shutdown
 
+# if postgres is running on a separate docker host, shut that down
 if [ "" != "${WEBMARKDB_DOCKER_HOST=}" ]
 then
     DOCKER_HOST="$WEBMARKDB_DOCKER_HOST" run_shutdown
 fi
 
+# if client is running on a separate docker host, shut that down
 if [ "" != "${LOAD_DOCKER_HOST=}" ]
 then
     DOCKER_HOST="$LOAD_DOCKER_HOST" run_shutdown

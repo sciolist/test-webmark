@@ -14,7 +14,8 @@ WEBMARKDB_CONNECT="${WEBMARKDB_CONNECT=_none:0.0.0.0}"
 echo "building $CONFIG"
 docker build "./configurations/$CONFIG" --tag webmark-server-img
 
-docker rm webmark-server 2>/dev/null >/dev/null || true || true
+# get rid of old container if found
+docker rm webmark-server 2>/dev/null >/dev/null || true
 
 # start container
 echo "creating $CONFIG container"
