@@ -48,34 +48,37 @@ run_cmd autocannon \
 sleep 3
 
 run() {
-# repeatedly collect stats from the docker container to track memory and cpu usage
-docker_loop() {
-    while [ true ]
-    do
-        DOCKER_HOST="$REMOTE_DOCKER" docker stats --no-stream --format '{{json .}}' webmark-server
-        sleep 1
-    done
+    # repeatedly collect stats from the docker container to track memory and cpu usage
+    DOCKER_HOST="$REMOTE_DOCKER" docker stats --format '{{json .}}' webmark-server &
+    jobid=$!
+
+    # run test
+    run_cmd autocannon \
+        "$FULL_URL" \
+        --json \
+        --connections 256 \
+        --duration 30 \
+        --workers 32 \
+        --pipelining 16
+
+    # kill docker loop
+    kill $jobid
+
+    # make sure docker loop has ended
+    wait
 }
 
-docker_loop &
-
-# run test
-run_cmd autocannon \
-    "$FULL_URL" \
-    --json \
-    --connections 256 \
-    --duration 30 \
-    --workers 32 \
-    --pipelining 16
-
-# kill docker_loop
-kill $(jobs -p)
-
-# make sure docker_loop has ended
-wait
-}
-
-result=$(run)
+# make sure our output path exists
 mkdir -p "./out/$TEST_URL"
-echo "$result" > "./out/$TEST_URL/$CONFIG.json"
+
+# create a temporary file for the results
+tmpfile=$(mktemp)
+
+# run the test and write output to tmpfile
+run | tee "$tmpfile"
+
+# move the tempfile to the output folder, stripping some docker output
+cat "$tmpfile" | awk '{gsub(/\033\[2J\033\[H/,"")}1' > "./out/$TEST_URL/$CONFIG.json"
+
+# and regenerate the html file
 ./build-html
