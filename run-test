@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run a single test against the running configuration
+# Run a single test
 set -ue
 cd "$(dirname $0)"
 # get the id of the started container so we can track its stats
