@@ -13,6 +13,8 @@ to run all the tests:
 
 this will create a file called "result.html" with the output!
 
+[you can see an example of the output here.](https://raw.githack.com/sciolist/test-webmark/master/example.html)
+
 to run tests for a specific configuration:
 
 ```sh
