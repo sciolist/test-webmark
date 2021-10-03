@@ -22,8 +22,15 @@ docker build --file ./autocannon.dockerfile --tag webmark-client-img .
 
 # start autocannon client to run a command
 run_cmd() {
+    # remove old container if found
     docker rm webmark-client 2>/dev/null >/dev/null || true
-    docker run --name webmark-client --network webmark --add-host host.docker.internal:host-gateway webmark-client-img $*
+    # and start client
+    docker run \
+        --rm \
+        --name webmark-client \
+        --network webmark \
+        --add-host host.docker.internal:host-gateway \
+        webmark-client-img $*
 }
 
 # wait until a single 200 response from the url
@@ -32,6 +39,7 @@ do
     code=$(run_cmd curl --max-time 5.5 -sL -w "%{http_code}\\n" "$FULL_URL" -o /dev/null || true)
     if [ $code -eq 200 ] || [ $code -eq 404 ]
     then
+        # connected successfully, stop looping
         break
     else
         # failed to connect, delay for a bit and try try again

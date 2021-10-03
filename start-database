@@ -18,8 +18,10 @@ NETWORK_ID=$(docker network ls --filter 'name=webmark' --quiet)
 # start postgres and populate with fortunes
 docker build --file ./postgres.dockerfile --tag webmark-db-img .
 
-docker rm webmark-db 2>/dev/null >/dev/null || true || true
+# remove old container if found
+docker rm webmark-db 2>/dev/null >/dev/null || true
 
+# start container
 docker run \
     --rm --detach \
     --network webmark \
