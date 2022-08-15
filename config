@@ -21,3 +21,6 @@
 ## this host will run the load testing
 ## by default, this will be localhost
 #export LOAD_DOCKER_HOST="ssh://10.0.0.3"
+
+## use buildkit
+export DOCKER_BUILDKIT=1
