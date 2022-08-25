@@ -28,5 +28,6 @@ docker run \
     --network-alias webmarkdb \
     --name webmark-db \
     --env POSTGRES_PASSWORD=webmark \
+    --env POSTGRES_HOST_AUTH_METHOD=trust \
     --publish 5432:5432 \
     webmark-db-img

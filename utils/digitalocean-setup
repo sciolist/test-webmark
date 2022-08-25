@@ -15,7 +15,7 @@ server_info=$(
     doctl compute droplet create \
     --region $region \
     --user-data-file digitalocean-userdata.sh \
-    --image ubuntu-21-10-x64 \
+    --image ubuntu-20-04-x64 \
     --size c-32 \
     --tag-name webmark-temp \
     --ssh-keys "$ssh_keys" \

@@ -39,7 +39,8 @@ const server = http.createServer(function (req, res) {
         case '/10-fortunes': return fortunes10Handler(res);
         case '/all-fortunes': return fortunesAllHandler(res);
         case '/primes': return primesHandler(res);
-        default: return helloworldHandler(res);
+        case '/helloworld': return helloworldHandler(res);
+        default: return res.end();
     }
 });
 server.listen(3000);

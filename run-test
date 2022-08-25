@@ -3,12 +3,13 @@
 set -ue
 cd "$(dirname $0)"
 # get the id of the started container so we can track its stats
+source config
 export CONFIG="$1"
 export TEST_URL="$2"
 LOAD_TARGET="${LOAD_TARGET=http://host.docker.internal:3000/}"
 export FULL_URL="$LOAD_TARGET$TEST_URL"
 export REMOTE_DOCKER="${DOCKER_HOST=}"
-export DOCKER_HOST="${LOAD_DOCKER_HOST=}"
+export DOCKER_HOST="${LOAD_DOCKER_HOST=$DOCKER_HOST}"
 
 # start up docker container
 ./start-configuration "$CONFIG"
