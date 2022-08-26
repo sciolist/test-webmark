@@ -1,0 +1,51 @@
+{
+  "db": "PostgreSQL",
+  "1268dc19c9a8d614fecda291a0cbed6381fb18e729c84bb76d22f18bdffa67db": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "message",
+          "ordinal": 1,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "select id, message from fortunes"
+  },
+  "bae7e1ddd4514806cfcc8645dc88820f065f12c30f39557204c72a3ca93fa491": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "message",
+          "ordinal": 1,
+          "type_info": "Text"
+        }
+      ],
+      "nullable": [
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "select id, message from fortunes limit 10"
+  }
+}

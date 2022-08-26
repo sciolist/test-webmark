@@ -8,6 +8,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/georgysavva/scany/pgxscan"
 )
 
 var (
@@ -53,7 +54,7 @@ func initDatabase() {
 	var err error
 	db, err = pgxpool.Connect(
 		context.Background(),
-		"host=webmarkdb port=5432 user=postgres password=webmark dbname=postgres pool_max_conns=150",
+		"host=webmarkdb port=5432 user=postgres password=webmark dbname=postgres pool_max_conns=128",
 	)
 	if err != nil {
 		panic(err)
@@ -61,46 +62,22 @@ func initDatabase() {
 }
 
 func fortuneHandler(c *fiber.Ctx) error {
-	rows, err := db.Query(context.Background(), "select id, message from fortunes limit 10")
+	var list []*Fortune
+	err := pgxscan.Select(context.Background(), db, &list, `select id, message from fortunes limit 10`)
 	if err != nil {
-		log.Fatalf("Error selecting db data: %v", err)
+		log.Fatalf("Error querying db data: %v", err)
 		return err
 	}
-
-	defer rows.Close()
-	list := make([]Fortune, 0, 10)
-	for rows.Next() {
-		f := Fortune{}
-		err := rows.Scan(&f.Id, &f.Message)
-		if err != nil {
-			log.Fatalf("Row scan error: %v", err)
-			return err
-		}
-		list = append(list, f)
-	}
-
 	return c.JSON(&list)
 }
 
 func allFortunesHandler(c *fiber.Ctx) error {
-	rows, err := db.Query(context.Background(), "select id, message from fortunes")
+	var list []*Fortune
+	err := pgxscan.Select(context.Background(), db, &list, `select id, message from fortunes`)
 	if err != nil {
 		log.Fatalf("Error selecting db data: %v", err)
 		return err
 	}
-
-	defer rows.Close()
-	list := make([]Fortune, 0, 1000)
-	for rows.Next() {
-		f := Fortune{}
-		err := rows.Scan(&f.Id, &f.Message)
-		if err != nil {
-			log.Fatalf("Row scan error: %v", err)
-			return err
-		}
-		list = append(list, f)
-	}
-
 	return c.JSON(&list)
 }
 

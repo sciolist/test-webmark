@@ -2,7 +2,7 @@ require "http/server"
 require "db"
 require "pg"
 
-CONN = DB.open "postgresql://postgres:webmark@webmarkdb:5432/postgres?max_pool_size=100"
+CONN = DB.open "postgresql://postgres:webmark@webmarkdb:5432/postgres?max_pool_size=128"
 ROUTES = Hash(String, Hash(String, (HTTP::Server::Context -> ))).new
 def route(method : String, route : String, &block : (HTTP::Server::Context -> ))
   ROUTES[method] ||= Hash(String, (HTTP::Server::Context -> )).new

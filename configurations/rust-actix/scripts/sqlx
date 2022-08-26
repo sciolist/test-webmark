@@ -1,0 +1,4 @@
+#!/bin/bash
+set -ue
+which sqlx || cargo install sqlx-cli --no-default-features --features native-tls,postgres
+cargo sqlx $*

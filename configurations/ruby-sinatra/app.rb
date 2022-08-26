@@ -5,7 +5,7 @@ require 'connection_pool'
 class App < Sinatra::Base
     set :logging, false
 
-    $pg = ConnectionPool.new(size: 100, timeout: 5) do
+    $pg = ConnectionPool.new(size: 128, timeout: 5) do
         PG.connect 'postgresql://postgres:webmark@webmarkdb:5432/postgres'
     end
 

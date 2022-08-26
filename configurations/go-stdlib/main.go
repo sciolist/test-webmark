@@ -45,7 +45,7 @@ func initDatabase(child bool) {
 	var err error
 	db, err = pgxpool.Connect(
 		context.Background(),
-		"host=webmarkdb port=5432 user=postgres password=webmark dbname=postgres pool_max_conns=150",
+		"host=webmarkdb port=5432 user=postgres password=webmark dbname=postgres pool_max_conns=128",
 	)
 	if err != nil {
 		panic(err)

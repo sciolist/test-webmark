@@ -6,7 +6,7 @@ const mem = std.mem;
 const Pg = @import("./pg.zig");
 const ObjectPool = @import("./object_pool.zig").ObjectPool;
 const util = @import("./utils.zig");
-const PGPool = ObjectPool(Pg.Client, pgConnect, 0x30, true);
+const PGPool = ObjectPool(Pg.Client, pgConnect, 0x80, true);
 const Stream = util.Stream;
 const ArrayList = @import("./array_list.zig").ArrayList;
 

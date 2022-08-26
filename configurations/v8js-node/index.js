@@ -3,7 +3,7 @@ const http = require('http');
 
 const pool = new Pool({
     connectionString: 'postgresql://postgres:webmark@webmarkdb:5432/postgres',
-    max: 150
+    max: 0x80
 });
 
 const HelloWorld = Buffer.from('Hello, world!');
