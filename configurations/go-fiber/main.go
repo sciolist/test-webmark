@@ -33,19 +33,10 @@ func main() {
 	}
 
 	app := fiber.New(config)
-	app.Use(func(c *fiber.Ctx) error {
-		switch c.Path() {
-		case "/10-fortunes":
-			fortuneHandler(c)
-		case "/all-fortunes":
-			allFortunesHandler(c)
-		case "/helloworld":
-			helloworldHandler(c)
-		case "/primes":
-			primesHandler(c)
-		}
-		return nil
-	})
+	app.Get("/helloworld", helloworldHandler)
+	app.Get("/10-fortunes", fortuneHandler)
+	app.Get("/all-fortunes", allFortunesHandler)
+	app.Get("/primes", primesHandler)
 
 	log.Fatal(app.Listen(":3000"))
 }
